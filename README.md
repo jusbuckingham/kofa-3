@@ -1,7 +1,7 @@
 # KOFA‑3
 
 <p align="center">
-  <img src="https://placehold.co/1200x400/000000/FFFFFF?text=KOFA-3+AI+Platform" alt="KOFA-3 Banner" />
+  <img src="https://raw.githubusercontent.com/jusbuckingham/kofa-3/main/public/assets/kofa-3-banner.png" alt="KOFA-3 Banner" />
 </p>
 
 <p align="center">
@@ -10,6 +10,9 @@
   <a href="https://github.com/jusbuckingham/kofa-3/actions"><img src="https://img.shields.io/github/actions/workflow/status/jusbuckingham/kofa-3/nextjs.yml?branch=main&label=build" alt="Build Status" /></a>
 </p>
 
+<p align="center">
+  <img src="https://placehold.co/1000x600/111111/FFFFFF?text=KOFA-3+System+Architecture" alt="KOFA-3 System Architecture" />
+</p>
 
 **KOFA‑3** is the next evolution of the Kofa platform — an intelligent, agentic web application that combines **Search**, **News**, and **Vote** into a unified experience built around *Black Consciousness* and *AI autonomy*.
 
