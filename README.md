@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  <img src="https://placehold.co/1000x600/111111/FFFFFF?text=KOFA-3+System+Architecture" alt="KOFA-3 System Architecture" />
+  <img src="public/assets/kofa-3-architecture.png" alt="KOFA-3 System Architecture" />
 </p>
 
 **KOFA‑3** is the next evolution of the Kofa platform — an intelligent, agentic web application that combines **Search**, **News**, and **Vote** into a unified experience built around *Black Consciousness* and *AI autonomy*.
