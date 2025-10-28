@@ -1,5 +1,16 @@
 # KOFA‑3
 
+<p align="center">
+  <img src="https://placehold.co/1200x400/000000/FFFFFF?text=KOFA-3+AI+Platform" alt="KOFA-3 Banner" />
+</p>
+
+<p align="center">
+  <a href="https://vercel.com"><img src="https://img.shields.io/badge/Deploy-Vercel-black?logo=vercel" alt="Deploy on Vercel" /></a>
+  <a href="https://github.com/jusbuckingham/kofa-3/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="MIT License" /></a>
+  <a href="https://github.com/jusbuckingham/kofa-3/actions"><img src="https://img.shields.io/github/actions/workflow/status/jusbuckingham/kofa-3/nextjs.yml?branch=main&label=build" alt="Build Status" /></a>
+</p>
+
+
 **KOFA‑3** is the next evolution of the Kofa platform — an intelligent, agentic web application that combines **Search**, **News**, and **Vote** into a unified experience built around *Black Consciousness* and *AI autonomy*.
 
 Developed using **Next.js 16**, **TypeScript**, and **Tailwind CSS**, KOFA‑3 is designed to think, search, and act agentically — using APIs and live internet data to generate insights from a Black American perspective.
