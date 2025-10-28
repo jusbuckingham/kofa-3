@@ -1,6 +1,13 @@
+/// <reference types="node" />
+
+// Local helper types to avoid `any`
+type SearchResult = { title: string; url: string };
+interface RssItem { title?: string; link?: string; isoDate?: string; pubDate?: string }
+type ParsedFeed = { items?: RssItem[] };
+
 import RSSParser from "rss-parser";
 import { JSDOM } from "jsdom";
-import { Readability } from "readability-js";
+import { Readability } from "@mozilla/readability";
 
 // SEARCH (Tavily optional)
 export async function webSearch(q: string) {
@@ -13,20 +20,25 @@ export async function webSearch(q: string) {
       },
       body: JSON.stringify({ query: q, max_results: 5, include_answer: false }),
     });
-    const j = await r.json();
-    return {
-      ok: true,
-      data: { results: j.results?.map((it: any) => ({ title: it.title, url: it.url })) },
-    };
+    type TavilyItem = { title?: string; url?: string };
+    type TavilyResponse = { results?: TavilyItem[] };
+    const j = (await r.json()) as TavilyResponse;
+    const results: SearchResult[] = (j.results ?? []).map((it) => ({
+      title: it.title ?? "",
+      url: it.url ?? "",
+    }));
+    return { ok: true, data: { results } };
   }
 
   const res = await fetch(`https://duckduckgo.com/html/?q=${encodeURIComponent(q)}`);
   const html = await res.text();
   const dom = new JSDOM(html);
-  const links = Array.from(dom.window.document.querySelectorAll("a.result__a"))
+  const anchors = Array.from(
+    dom.window.document.querySelectorAll<HTMLAnchorElement>("a.result__a")
+  )
     .slice(0, 5)
-    .map((a: any) => ({ title: a.textContent?.trim(), url: a.href }));
-  return { ok: true, data: { results: links } };
+    .map((a) => ({ title: a.textContent?.trim() ?? "", url: a.href }));
+  return { ok: true, data: { results: anchors as SearchResult[] } };
 }
 
 // FETCH & EXTRACT
@@ -40,12 +52,13 @@ export async function webFetch(url: string) {
     const reader = new Readability(dom.window.document);
     const article = reader.parse();
     return { ok: true, data: { title: article?.title, text: article?.textContent } };
-  } catch (e: any) {
+  } catch (e: unknown) {
     return { ok: false, data: null, error: String(e) };
   }
 }
 
 // NEWS via RSS
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function newsRss(_q: string) {
   const parser = new RSSParser();
   const sources = process.env.NEWS_RSS_SOURCES
@@ -55,13 +68,13 @@ export async function newsRss(_q: string) {
         "https://rss.nytimes.com/services/xml/rss/nyt/US.xml",
         "https://www.npr.org/rss/rss.php?id=1004",
       ];
-  const feeds = await Promise.allSettled(sources.map((u) => parser.parseURL(u)));
-  const items = feeds
-    .flatMap((res: any) => res.value?.items || [])
-    .sort(
-      (a: any, b: any) =>
-        new Date(b.isoDate || b.pubDate || 0).getTime() -
-        new Date(a.isoDate || a.pubDate || 0).getTime()
+  const feedPromises = sources.map((u: string) => parser.parseURL(u) as unknown as Promise<ParsedFeed>);
+  const feeds = await Promise.allSettled(feedPromises);
+  const items: RssItem[] = feeds
+    .flatMap((res) => (res.status === "fulfilled" ? res.value.items ?? [] : []))
+    .sort((a, b) =>
+      new Date(b.isoDate || b.pubDate || 0).getTime() -
+      new Date(a.isoDate || a.pubDate || 0).getTime()
     );
   return { ok: true, data: { items } };
 }
